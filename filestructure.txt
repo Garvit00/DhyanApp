@@ -1,0 +1,70 @@
+|-- .eslintrc.cjs
+|-- .gitignore
+|-- .prettierrc
+|-- tailwind.config.js
+|-- public
+    |-- fonts
+        |-- FontspringDEMOGelicaRegular.otf
+        |-- GelicaSemiBold.otf
+        |-- Modern Negra Demo.ttf
+        |-- SauberScript.otf
+        |-- Samarkan.ttf
+    |-- images
+        |-- bg_mobile.webp
+        |-- bg.webp
+        |-- bg_desktop.webp
+        |-- frame.png
+    |-- models
+        |-- scene.glb
+    |-- videos
+        |-- hero-bg.webm
+        |-- hero-bg.mp4
+    |-- Meditation.gif
+    |-- applestore.svg
+    |-- arrow-up.svg
+    |-- playstore.svg
+    |-- frame.png
+|-- src
+    |-- vite-env.d.ts
+    |-- components
+        |-- Lights.tsx
+        |-- ModelView.tsx
+        |-- pages
+            |-- BlogPage.tsx
+            |-- Blogs.tsx
+        |-- InteractiveStars.tsx
+        |-- Navbar.tsx
+        |-- Testimonial.tsx
+        |-- IphoneModel.tsx
+        |-- Loader.tsx
+        |-- PhoneModel.tsx
+        |-- Blog.tsx
+        |-- Contact.tsx
+        |-- Features.tsx
+        |-- Footer.tsx
+        |-- Hero.tsx
+        |-- HeroPhone.tsx
+        |-- Social.tsx
+    |-- constants
+        |-- index.ts
+    |-- utils
+        |-- animations.ts
+        |-- index.ts
+        |-- getTime.ts
+        |-- firebaseUtils.ts
+        |-- useAutoScroll.ts
+    |-- types
+        |-- index.d.ts
+        |-- three.d.ts
+    |-- main.tsx
+    |-- firebase.ts
+    |-- index.css
+    |-- App.tsx
+|-- package-lock.json
+|-- tsconfig.node.json
+|-- tsconfig.json
+|-- .env.local
+|-- package.json
+|-- vite.config.ts
+|-- README.md
+|-- index.html
