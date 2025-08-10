@@ -36,7 +36,7 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         block: 'start'
       });
     }
@@ -66,9 +66,6 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
     }
     
     // Close mobile sidebar if open
-    if (sidebar) {
-      setSidebar(false);
-    }
   };
 
   return (
@@ -76,7 +73,7 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
     <div ref={ref} className="fixed top-0 left-0 w-full z-[99999] flex justify-center pointer-events-none">
       {/* Main Navbar Container */}
       <div
-        className="w-[92%] max-w-5xl px-5 md:px-10 py-4 md:py-0 rounded-[20px] md:rounded-[28px] border-[1.5px] border-[#0D0D0D] 
+        className="w-[92%] max-w-5xl px-5 md:px-10 py-4 md:py-0 rounded-[20px] md:rounded-[28px] border-[1.5px] border-[#666666] 
                    backdrop-blur-[14.95px] bg-[rgba(18,21,27,0.6)] flex items-center justify-between relative shadow-lg 
                    pointer-events-auto mt-3 sm:mt-4 h-[52px] md:h-[68px]"
         style={{
@@ -102,9 +99,9 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
           <img
             src="https://firebasestorage.googleapis.com/v0/b/dhyanapp-90de4.appspot.com/o/Website_New%2FNavbar%2Fdhyanlogo.svg?alt=media&token=b2d2d4cd-1c26-4bbe-b39d-c7520e053f6d"
             alt="DhyanApp Logo"
-            className="h-[18px] w-auto md:h-[28px]"
+            className="h-[38px] w-auto md:h-[50px] md:w-[45px]"
           />
-          <div className="text-white font-['SF_Pro_Display'] text-[15px] font-bold md:font-['Geist'] md:text-[22px] md:font-semibold">
+          <div className="text-white font-sfpro text-[18px] font-bold md:font-sfpro md:text-[26px] md:font-semibold">
             DhyanApp
           </div>
         </div>
@@ -115,8 +112,9 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
             <button
               key={label}
               onClick={() => handleNavClick(label)}
-              className="hover:text-[#00b4d8] transition whitespace-nowrap text-center 
-                         font-['SF_Pro_Display'] text-[13.5px] font-medium tracking-[0.25px] bg-transparent border-none cursor-pointer"
+              className="hover:text-[#00b4d8] transition whitespace-nowrap text-center
+                         font-sfpro text-[18px] font-medium tracking-[0.25px] bg-transparent border-none cursor-pointer"
+              style={{outline:'none'}}
             >
               {label}
             </button>
@@ -132,7 +130,7 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed top-0 right-0 z-[70] w-full h-screen text-white shadow-2xl bg-[rgba(0,0,0,0.75)] backdrop-blur-[8px] overflow-hidden"
+            className="fixed top-0 right-0 z-[70] w-full h-screen text-white shadow-2xl bg-[rgba(0,0,0,0.75)] backdrop-blur-[8px] overflow-hidden pointer-events-auto"
           >
             {/* Close Button */}
             <div className="absolute top-6 right-6 z-[100] pointer-events-auto">
@@ -140,6 +138,7 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
                 onClick={() => setSidebar(false)}
                 className="text-white hover:text-[#00b4d8] transition-colors font-light 
                            flex items-center justify-center leading-none w-7 h-7 text-3xl"
+                style={{outline:"none"}}
                 tabIndex={0}
                 aria-label="Close menu"
               >
@@ -152,8 +151,11 @@ const Navbar = forwardRef<HTMLDivElement, any>((_, ref: Ref<HTMLDivElement>) => 
               {["About", "Practices", "Testimonials", "Blog", "Contact"].map((label) => (
                 <button
                   key={label}
-                  onClick={() => handleNavClick(label)}
-                  className="hover:text-[#00b4d8] transition-colors text-[32px] font-['SF_Pro_Display'] font-light bg-transparent border-none cursor-pointer text-white"
+                  onClick={() => {
+                    handleNavClick(label);
+                    setSidebar(false);
+                  }}
+                  className="hover:text-[#00b4d8] transition-colors text-[36px] font-sfpro font-light bg-transparent border-none cursor-pointer text-white"
                 >
                   {label}
                 </button>

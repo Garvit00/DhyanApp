@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sfpro: ['"SF Pro Display"', 'sans-serif'],
+      },
       colors: {
         blue: "#2997FF",
         gray: {
