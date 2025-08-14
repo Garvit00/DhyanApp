@@ -220,7 +220,7 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
                 // Simple infinite Y rotation
                 const rotationAnim = gsap.to(modelRef.current.rotation, {
                 y: 0.9, // rotate to +0.2 radians (~11 degrees)
-                duration: 4, // speed in seconds
+                duration: 3, // speed in seconds
                 yoyo: true,  // reverse back
                 repeat: -1,
                 ease: "power1.inOut"
@@ -232,7 +232,7 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
 
     return (
         <div ref={canvasContainerRef} className="relative h-[72vh] w-full overflow-hidden md:h-[90vh]"
-        style={{touchAction: 'pan-y'} }
+        style={{touchAction: 'pan-y'}}
         >
             <Canvas
                 className="size-full"
