@@ -447,6 +447,7 @@ body {
 .phone-entrance {
     backface-visibility: hidden;
     transform-origin: center bottom;
+    touch-action: pan-y;
 }
 
 /* ==========================================================================

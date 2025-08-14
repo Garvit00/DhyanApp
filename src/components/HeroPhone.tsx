@@ -210,19 +210,43 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
         );
     }
 
+    const isTouchDevice = 
+        typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+        useEffect(() => {
+            if(isTouchDevice && modelRef.current){
+                // Start from a slight angle to look natural
+                modelRef.current.rotation.y = -1;
+                // Simple infinite Y rotation
+                const rotationAnim = gsap.to(modelRef.current.rotation, {
+                y: 0.9, // rotate to +0.2 radians (~11 degrees)
+                duration: 4, // speed in seconds
+                yoyo: true,  // reverse back
+                repeat: -1,
+                ease: "power1.inOut"
+                });
+            return () => { rotationAnim.kill() };
+            }
+        },[isTouchDevice]);
+
+
     return (
-        <div ref={canvasContainerRef} className="relative h-[75vh] w-full overflow-hidden md:h-[90vh]">
+        <div ref={canvasContainerRef} className="relative h-[72vh] w-full overflow-hidden md:h-[90vh]"
+        style={isTouchDevice ? { pointerEvents: 'none' } : {} }
+        >
             <Canvas
                 className="size-full"
-                style={{ position: "absolute", top: 0, left: 0 }}
+                style={{ position: "absolute", top: 0, left: 0, touchAction: 'pan-y'}}
                 eventSource={canvasContainerRef}
             >
-                <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={30} />
+                <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={30}
+                />
 
                 <OrbitControls
                     ref={controlsRef}
                     enableZoom={false}
                     enablePan={false}
+                    enableRotate={!isTouchDevice}
                     rotateSpeed={0.4}
                     target={[0, 0, 0]}
                     minPolarAngle={featuresMode ? Math.PI / 2 : Math.PI / 2 - 0.3}
@@ -234,6 +258,10 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
                     onStart={handleInteractionStart}
                     onEnd={handleInteractionEnd}
                     onChange={handleDrag}
+                    touches={{
+                        ONE: 0,  // disable single finger touch rotation
+                        TWO: 0   // disable pinch/pan
+                    }}
                 />
 
                 {/* @ts-expect-error: TypeScript doesn't recognize ambientLight */}

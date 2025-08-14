@@ -695,6 +695,7 @@ const Hero = forwardRef<HTMLElement>((_, ref) => {
                 width: "500px",
                 height: "750px",
                 marginTop: "-80px",
+                touchAction: 'pan-y'
               }}
             >
               <HeroPhone 
