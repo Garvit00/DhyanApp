@@ -324,7 +324,7 @@ const Hero = forwardRef<HTMLElement>((_, ref) => {
             {/* Rotating gradient ring */}
           <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-[280px] h-[280px] rounded-full p-1">
-                <div className="w-full h-full rounded-full bg-gradient-conic from-white/20 via-white/10 via-white/5 via-white/10 to-white/20 animate-spin-slow relative">
+                <div className="w-full h-full rounded-full bg-gradient-conic from-white/20 via-white/10  to-white/20 animate-spin-slow relative">
                   <div className="absolute inset-1 bg-black rounded-full"></div>
                 </div>
               </div>

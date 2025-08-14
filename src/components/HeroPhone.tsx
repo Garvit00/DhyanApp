@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
 import ModelView from "./ModelView";
 import gsap from "gsap";
@@ -10,6 +10,41 @@ interface HeroPhoneProps {
   screens?: string[];
   featuresMode?: boolean;
   onModelLoaded?: () => void;
+}
+
+// === Helper that runs inside <Canvas> and rotates on mobile ===
+function MobileAutoRotate({
+  targetRef,
+  active,
+  min = -1,
+  max = 0.9,
+  oneWayDuration = 3, // seconds (forward only)
+}: {
+  targetRef: React.RefObject<any>;
+  active: boolean;
+  min?: number;
+  max?: number;
+  oneWayDuration?: number;
+}) {
+  // Initialize to min so it "starts from a slight angle"
+  useEffect(() => {
+    if (active && targetRef.current) {
+      targetRef.current.rotation.y = min;
+    }
+  }, [active, targetRef, min]);
+
+  // Sinusoidal yoyo between [min, max] in 3s each way (6s full cycle)
+  useFrame((state) => {
+    if (!active || !targetRef.current) return;
+    const center = (min + max) / 2;
+    const amp = (max - min) / 2;
+    const omega = Math.PI / oneWayDuration; // full cycle = 2*oneWayDuration
+    const t = state.clock.getElapsedTime();
+    // Start at min at t=0: shift by -π/2
+    targetRef.current.rotation.y = center + amp * Math.sin(omega * t - Math.PI / 2);
+  });
+
+  return null;
 }
 
 const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, onModelLoaded }) => {
@@ -23,6 +58,10 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
     const modelRef = useRef<any>(null);
     const texturesRef = useRef<THREE.Texture[]>([]);
     
+    const isTouchDevice = 
+        typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+
     // Filter out any falsy or undefined image URLs
     const screenImages = (screens || []).filter(Boolean);
 
@@ -96,7 +135,7 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
             setScreenIndex((prev) => (prev + 1) % screenImages.length);
         }, 5000);
         return () => clearInterval(interval);
-    }, [allTexturesLoaded, screenImages.length, featuresMode]);
+    }, [allTexturesLoaded, screenImages.length, featuresMode, isTouchDevice]);
 
     // Add floating animation for the iPhone
     useEffect(() => {
@@ -210,33 +249,16 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
         );
     }
 
-    const isTouchDevice = 
-        typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-
-        useEffect(() => {
-            if(isTouchDevice && modelRef.current){
-                // Start from a slight angle to look natural
-                modelRef.current.rotation.y = -1;
-                // Simple infinite Y rotation
-                const rotationAnim = gsap.to(modelRef.current.rotation, {
-                y: 0.9, // rotate to +0.2 radians (~11 degrees)
-                duration: 3, // speed in seconds
-                yoyo: true,  // reverse back
-                repeat: -1,
-                ease: "power1.inOut"
-                });
-            return () => { rotationAnim.kill() };
-            }
-        },[isTouchDevice, allTexturesLoaded]);
-
-
     return (
         <div ref={canvasContainerRef} className="relative h-[72vh] w-full overflow-hidden md:h-[90vh]"
-        style={{touchAction: 'pan-y'}}
+        style={isTouchDevice ? {pointerEvents: 'none'} : {}}
         >
             <Canvas
                 className="size-full"
-                style={{ position: "absolute", top: 0, left: 0, touchAction: 'pan-y'}}
+                style={{ position: "absolute", top: 0, left: 0, touchAction: 'pan-y',
+                    // Let page scroll naturally on mobile:
+                    ...(isTouchDevice ? { pointerEvents: "none" } : {})
+                }}
                 eventSource={canvasContainerRef}
             >
                 <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={30}
@@ -276,6 +298,15 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
                     position={[0, 0, 0]}
                     rotation={[0, 0, 0]}
                 />
+                {/* Mobile-only auto rotation using useFrame */}
+                <MobileAutoRotate
+                targetRef={modelRef}
+                active={!!isTouchDevice}
+                min={-1}
+                max={0.9}
+                oneWayDuration={3}
+                />
+
             </Canvas>
         </div>
     );
