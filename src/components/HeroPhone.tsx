@@ -227,7 +227,7 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
                 });
             return () => { rotationAnim.kill() };
             }
-        },[isTouchDevice]);
+        },[isTouchDevice, allTexturesLoaded]);
 
 
     return (
