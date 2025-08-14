@@ -232,7 +232,7 @@ const HeroPhone: React.FC<HeroPhoneProps> = ({ screens, featuresMode = false, on
 
     return (
         <div ref={canvasContainerRef} className="relative h-[72vh] w-full overflow-hidden md:h-[90vh]"
-        style={isTouchDevice ? { pointerEvents: 'none' } : {} }
+        style={{touchAction: 'pan-y'} }
         >
             <Canvas
                 className="size-full"
